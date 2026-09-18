@@ -4,8 +4,8 @@
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The panel names the Motion, duration, and that there is no Target
-- [ ] Copy to agent still copies the full agent-readable Spec
-- [ ] The raw Spec is available but not the primary view
+- [x] The panel names the Motion, duration, and that there is no Target
+- [x] Copy to agent still copies the full agent-readable Spec
+- [x] The raw Spec is available but not the primary view

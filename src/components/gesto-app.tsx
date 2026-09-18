@@ -7,6 +7,7 @@ import type { SketchSample, Spec } from "@/domain/spec";
 import { specFromSketch } from "@/domain/spec-from-sketch";
 import { CatalogList } from "./catalog-list";
 import { MotionPreview } from "./motion-preview";
+import { SpecPanel } from "./spec-panel";
 
 type Source = { kind: "catalog"; name: CatalogName } | { kind: "sketch" };
 
@@ -19,6 +20,7 @@ export function GestoApp() {
   );
   const [livePath, setLivePath] = useState<Array<{ x: number; y: number }>>([]);
   const [copied, setCopied] = useState(false);
+  const [sketchNotice, setSketchNotice] = useState<string | null>(null);
   const samplesRef = useRef<SketchSample[]>([]);
   const startedAtRef = useRef(0);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -41,6 +43,9 @@ export function GestoApp() {
       if (samples.length >= 2) {
         setSketchSpec(specFromSketch("sketch", samples));
         setSource({ kind: "sketch" });
+        setSketchNotice(null);
+      } else {
+        setSketchNotice("Draw a path, then press Space.");
       }
       setLiveSample(null);
       setLivePath([]);
@@ -66,6 +71,7 @@ export function GestoApp() {
     startedAtRef.current = performance.now();
     setLiveSample(null);
     setLivePath([]);
+    setSketchNotice(null);
     setSketching(true);
     setCopied(false);
   };
@@ -111,26 +117,17 @@ export function GestoApp() {
 
   return (
     <div className="flex min-h-full flex-col bg-[#0c0c0c] text-[#ededed]">
-      <header className="flex items-center justify-between gap-4 border-b border-white/10 px-6 py-4">
-        <div>
-          <p className="font-mono text-[11px] tracking-[0.18em] text-white/40">
-            GESTO
-          </p>
-          <h1 className="text-lg font-medium tracking-tight">
-            Sketch or pick a Motion. Copy the Spec.
-          </h1>
-        </div>
-        <button
-          type="button"
-          onClick={copySpec}
-          className="h-10 border border-white/15 bg-white px-4 text-sm text-black hover:bg-lime-300"
-        >
-          {copied ? "Copied" : "Copy to agent"}
-        </button>
+      <header className="border-b border-white/10 px-6 py-4">
+        <p className="font-mono text-[11px] tracking-[0.18em] text-white/40">
+          GESTO
+        </p>
+        <h1 className="text-lg font-medium tracking-tight">
+          See a Motion, or Sketch one. Copy it for your agent.
+        </h1>
       </header>
 
       <main className="grid flex-1 gap-px bg-white/10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,22rem)]">
-        <section className="bg-[#0c0c0c] p-6">
+        <section className="order-2 bg-[#0c0c0c] p-6 lg:order-1">
           <h2 className="mb-4 font-mono text-[11px] tracking-[0.16em] text-white/40">
             Catalog
           </h2>
@@ -143,7 +140,7 @@ export function GestoApp() {
           />
         </section>
 
-        <section className="bg-[#101010] p-6">
+        <section className="order-1 bg-[#101010] p-6 lg:order-2">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
               Sketch
@@ -214,19 +211,20 @@ export function GestoApp() {
               </div>
             )}
           </div>
+          {sketchNotice ? (
+            <p className="mt-3 text-sm text-red-300">{sketchNotice}</p>
+          ) : null}
         </section>
 
-        <section className="bg-[#0c0c0c] p-6">
-          <h2 className="mb-4 font-mono text-[11px] tracking-[0.16em] text-white/40">
-            Spec
-          </h2>
-          <p className="mb-3 text-sm text-white/50">
-            Motion only. Name the Target when you paste this in the agent.
-          </p>
-          <pre className="max-h-[28rem] overflow-auto border border-white/10 bg-black p-4 font-mono text-[11px] leading-5 text-white/70">
-            {hydrated ? serializeSpec(spec) : "Motion Spec v1"}
-          </pre>
-        </section>
+        {hydrated ? (
+          <SpecPanel spec={spec} copied={copied} onCopy={copySpec} />
+        ) : (
+          <section className="bg-[#0c0c0c] p-6">
+            <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
+              Spec
+            </h2>
+          </section>
+        )}
       </main>
     </div>
   );

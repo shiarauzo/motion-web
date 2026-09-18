@@ -4,8 +4,8 @@
 
 **Blocked by:** 06 — Sketch trail and pointer capture
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A too-short Sketch leaves a visible notice
-- [ ] The previous Spec stays on the stage
-- [ ] A valid Sketch clears the notice
+- [x] A too-short Sketch leaves a visible notice
+- [x] The previous Spec stays on the stage
+- [x] A valid Sketch clears the notice
