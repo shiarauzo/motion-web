@@ -4,8 +4,8 @@
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The live stroke is visible on the stage during the Sketch
-- [ ] The stage captures the pointer so the stroke continues if the pointer leaves the box
-- [ ] Space still stops and runs Cleanup when there are enough samples
+- [x] The live stroke is visible on the stage during the Sketch
+- [x] The stage captures the pointer so the stroke continues if the pointer leaves the box
+- [x] Space still stops and runs Cleanup when there are enough samples

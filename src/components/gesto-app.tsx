@@ -216,15 +216,17 @@ export function GestoApp() {
           ) : null}
         </section>
 
-        {hydrated ? (
-          <SpecPanel spec={spec} copied={copied} onCopy={copySpec} />
-        ) : (
-          <section className="bg-[#0c0c0c] p-6">
-            <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
-              Spec
-            </h2>
-          </section>
-        )}
+        <div className="order-3 lg:order-3">
+          {hydrated ? (
+            <SpecPanel spec={spec} copied={copied} onCopy={copySpec} />
+          ) : (
+            <section className="bg-[#0c0c0c] p-6">
+              <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
+                Spec
+              </h2>
+            </section>
+          )}
+        </div>
       </main>
     </div>
   );

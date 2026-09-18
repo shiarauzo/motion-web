@@ -23,8 +23,8 @@ export function CatalogList({ selected, onSelect }: CatalogListProps) {
                   : "border-white/10 text-white/80 hover:border-white/30"
               }`}
             >
-              <div className="pointer-events-none flex justify-center bg-black">
-                <MotionPreview spec={item} size={128} />
+              <div className="pointer-events-none flex aspect-square items-center justify-center bg-black">
+                <MotionPreview spec={item} size={140} />
               </div>
               <span className="mt-3 text-sm capitalize">{item.name}</span>
             </button>
