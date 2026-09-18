@@ -4,8 +4,8 @@
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Points on the cleaned path are spaced by distance, not only remapped 0–1
-- [ ] The first point is t 0 and the last point is t 1
-- [ ] A rushed segment does not stay a fast spike in the Spec
+- [x] Points on the cleaned path are spaced by distance, not only remapped 0–1
+- [x] The first point is t 0 and the last point is t 1
+- [x] A rushed segment does not stay a fast spike in the Spec
