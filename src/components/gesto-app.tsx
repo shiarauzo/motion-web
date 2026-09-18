@@ -21,15 +21,23 @@ export function GestoApp() {
   const [livePath, setLivePath] = useState<Array<{ x: number; y: number }>>([]);
   const [copied, setCopied] = useState(false);
   const [sketchNotice, setSketchNotice] = useState<string | null>(null);
+  const [tokenSrc, setTokenSrc] = useState<string | null>(null);
   const samplesRef = useRef<SketchSample[]>([]);
   const startedAtRef = useRef(0);
   const stageRef = useRef<HTMLDivElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const hydrated = useSyncExternalStore(
     () => () => {},
     () => true,
     () => false,
   );
+
+  useEffect(() => {
+    return () => {
+      if (tokenSrc) URL.revokeObjectURL(tokenSrc);
+    };
+  }, [tokenSrc]);
 
   const spec = useMemo(() => {
     if (source.kind === "catalog") return catalogItem(source.name);
@@ -97,6 +105,16 @@ export function GestoApp() {
     samplePointer(event);
   };
 
+  const chooseToken = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setTokenSrc((current) => {
+      if (current) URL.revokeObjectURL(current);
+      return URL.createObjectURL(file);
+    });
+    event.target.value = "";
+  };
+
   const copySpec = async () => {
     const text = serializeSpec(spec);
     try {
@@ -133,6 +151,7 @@ export function GestoApp() {
           </h2>
           <CatalogList
             selected={source.kind === "catalog" ? source.name : undefined}
+            tokenSrc={tokenSrc}
             onSelect={(name) => {
               setSource({ kind: "catalog", name });
               setCopied(false);
@@ -145,23 +164,39 @@ export function GestoApp() {
             <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
               Sketch
             </h2>
-            {sketching ? (
+            <div className="flex gap-2">
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={chooseToken}
+              />
               <button
                 type="button"
-                onClick={stopSketch}
-                className="h-9 border border-red-400 px-3 text-sm text-red-400"
-              >
-                Stop
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={startSketch}
+                onClick={() => imageInputRef.current?.click()}
                 className="h-9 border border-white/15 px-3 text-sm hover:border-white/40"
               >
-                Sketch
+                Use image
               </button>
-            )}
+              {sketching ? (
+                <button
+                  type="button"
+                  onClick={stopSketch}
+                  className="h-9 border border-red-400 px-3 text-sm text-red-400"
+                >
+                  Stop
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={startSketch}
+                  className="h-9 border border-white/15 px-3 text-sm hover:border-white/40"
+                >
+                  Sketch
+                </button>
+              )}
+            </div>
           </div>
           <div
             ref={stageRef}
@@ -196,18 +231,31 @@ export function GestoApp() {
                   </svg>
                 ) : null}
                 {liveSample ? (
-                  <div
-                    className="absolute size-3 rounded-[3px] bg-lime-300"
-                    style={{
-                      left: liveSample.x - 6,
-                      top: liveSample.y - 6,
-                    }}
-                  />
+                  tokenSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={tokenSrc}
+                      alt=""
+                      className="absolute size-8 rounded-sm object-cover"
+                      style={{
+                        left: liveSample.x - 16,
+                        top: liveSample.y - 16,
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="absolute size-3 rounded-[3px] bg-lime-300"
+                      style={{
+                        left: liveSample.x - 6,
+                        top: liveSample.y - 6,
+                      }}
+                    />
+                  )
                 ) : null}
               </>
             ) : (
               <div className="flex h-full items-center justify-center">
-                <MotionPreview spec={spec} size={280} />
+                <MotionPreview spec={spec} size={280} tokenSrc={tokenSrc} />
               </div>
             )}
           </div>

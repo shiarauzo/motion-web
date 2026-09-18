@@ -23,14 +23,14 @@ control.
 
 ## Current state
 
-Catalog cards play live motion. A sketch shows its trail, warns if it is too
-short, and copies a plain-language spec. Cleanup evens timing along the path.
+Catalog cards play live motion. A sketch shows its trail. Authors can preview
+with their own image. The copied spec stays motion-only.
 
 ## Next action
 
-Let the author drop an image as the preview token, then apply a copied spec on
-a real page.
+Make the preview follow Spec time, then apply a copied spec on a real page.
 
 ## Links
 
+- Repository: https://github.com/shiarauzo/motion-web
 - Local app: `src/app/page.tsx`
