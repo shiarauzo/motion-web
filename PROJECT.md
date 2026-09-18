@@ -23,13 +23,13 @@ control.
 
 ## Current state
 
-The page plays bounce, spiral, and orbit, records a pointer sketch, runs
-cleanup, and copies one motion-only spec.
+Catalog cards play live motion. A sketch shows its trail, warns if it is too
+short, and copies a plain-language spec. Cleanup evens timing along the path.
 
 ## Next action
 
-Use a copied spec on a real page and add the next catalog motion only if that
-apply step fails.
+Let the author drop an image as the preview token, then apply a copied spec on
+a real page.
 
 ## Links
 

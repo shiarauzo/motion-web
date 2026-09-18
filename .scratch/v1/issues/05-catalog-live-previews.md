@@ -4,8 +4,8 @@
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Each Catalog item plays its looping Motion in place
-- [ ] Selecting a card still updates the stage and the Spec
-- [ ] The card label stays a single line of text
+- [x] Each Catalog item plays its looping Motion in place
+- [x] Selecting a card still updates the stage and the Spec
+- [x] The card label stays a single line of text
