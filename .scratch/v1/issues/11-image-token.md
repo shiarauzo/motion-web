@@ -4,8 +4,8 @@
 
 **Blocked by:** 05 — Catalog live previews
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] An image can be chosen as the token
-- [ ] Catalog and Sketch previews use that token
-- [ ] The Spec still does not name a Target
+- [x] An image can be chosen as the token
+- [x] Catalog and Sketch previews use that token
+- [x] The Spec still does not name a Target

@@ -4,9 +4,10 @@ import { MotionPreview } from "./motion-preview";
 type CatalogListProps = {
   selected?: CatalogName;
   onSelect: (name: CatalogName) => void;
+  tokenSrc?: string | null;
 };
 
-export function CatalogList({ selected, onSelect }: CatalogListProps) {
+export function CatalogList({ selected, onSelect, tokenSrc }: CatalogListProps) {
   return (
     <ul className="grid gap-3">
       {CATALOG_NAMES.map((name) => {
@@ -24,7 +25,7 @@ export function CatalogList({ selected, onSelect }: CatalogListProps) {
               }`}
             >
               <div className="pointer-events-none flex aspect-square items-center justify-center bg-black">
-                <MotionPreview spec={item} size={140} />
+                <MotionPreview spec={item} size={140} tokenSrc={tokenSrc} />
               </div>
               <span className="mt-3 text-sm capitalize">{item.name}</span>
             </button>
