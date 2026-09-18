@@ -35,6 +35,24 @@ describe("cleanupSketch", () => {
     expect(spanY).toBeLessThan(0.2);
   });
 
+  it("spaces time by path distance so a rushed segment does not stay a spike", () => {
+    const cleaned = cleanupSketch([
+      { x: 0, y: 0, timeMs: 0 },
+      { x: 25, y: 0, timeMs: 4 },
+      { x: 50, y: 0, timeMs: 8 },
+      { x: 75, y: 0, timeMs: 12 },
+      { x: 100, y: 0, timeMs: 16 },
+      { x: 125, y: 0, timeMs: 80 },
+      { x: 150, y: 0, timeMs: 160 },
+      { x: 175, y: 0, timeMs: 240 },
+      { x: 200, y: 0, timeMs: 320 },
+    ]);
+    const mid = cleaned.path.find((point) => point.x > 0.45 && point.x < 0.55);
+
+    expect(mid?.t).toBeGreaterThan(0.2);
+    expect(mid?.t).toBeLessThan(0.3);
+  });
+
   it("reduces jitter on a noisy straight stroke", () => {
     const cleaned = cleanupSketch([
       { x: 0, y: 0, timeMs: 0 },

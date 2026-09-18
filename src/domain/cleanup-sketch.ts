@@ -101,14 +101,30 @@ function closeLoop(samples: readonly SketchSample[]): SketchSample[] {
 }
 
 function normalizeTime(samples: readonly SketchSample[]): PathPoint[] {
-  const start = samples[0]!.timeMs;
-  const span = Math.max(samples.at(-1)!.timeMs - start, 1);
+  const distances = samples.map((sample, index) => {
+    if (index === 0) return 0;
+    const previous = samples[index - 1]!;
+    return Math.hypot(sample.x - previous.x, sample.y - previous.y);
+  });
+  const total = distances.reduce((sum, distance) => sum + distance, 0);
 
-  return samples.map((sample) => ({
-    x: roundUnit(sample.x),
-    y: roundUnit(sample.y),
-    t: roundUnit((sample.timeMs - start) / span),
-  }));
+  if (total === 0) {
+    return samples.map((sample, index) => ({
+      x: roundUnit(sample.x),
+      y: roundUnit(sample.y),
+      t: index === 0 ? 0 : 1,
+    }));
+  }
+
+  let traveled = 0;
+  return samples.map((sample, index) => {
+    traveled += distances[index]!;
+    return {
+      x: roundUnit(sample.x),
+      y: roundUnit(sample.y),
+      t: roundUnit(traveled / total),
+    };
+  });
 }
 
 function roundUnit(value: number): number {
