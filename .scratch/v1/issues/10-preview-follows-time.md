@@ -4,7 +4,7 @@
 
 **Blocked by:** 09 — Even Cleanup timing
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Two Specs with the same polyline and different timing play differently
-- [ ] Catalog and Sketch previews share that player
+- [x] Two Specs with the same polyline and different timing play differently
+- [x] Catalog and Sketch previews share that player

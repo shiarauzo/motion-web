@@ -134,20 +134,18 @@ export function GestoApp() {
   };
 
   return (
-    <div className="flex min-h-full flex-col bg-[#0c0c0c] text-[#ededed]">
-      <header className="border-b border-white/10 px-6 py-4">
-        <p className="font-mono text-[11px] tracking-[0.18em] text-white/40">
-          GESTO
-        </p>
-        <h1 className="text-lg font-medium tracking-tight">
-          See a Motion, or Sketch one. Copy it for your agent.
+    <div className="flex min-h-full flex-col bg-paper text-ink">
+      <header className="px-6 pt-8 pb-4 lg:px-10">
+        <p className="font-serif text-3xl tracking-tight">Gesto</p>
+        <h1 className="mt-2 max-w-xl text-lg text-mute text-balance">
+          See how it moves. Then copy it for your page.
         </h1>
       </header>
 
-      <main className="grid flex-1 gap-px bg-white/10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,22rem)]">
-        <section className="order-2 bg-[#0c0c0c] p-6 lg:order-1">
-          <h2 className="mb-4 font-mono text-[11px] tracking-[0.16em] text-white/40">
-            Catalog
+      <main className="grid flex-1 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)_minmax(0,22rem)]">
+        <section className="order-2 px-6 pb-8 lg:order-1 lg:px-10">
+          <h2 className="mb-4 text-[12px] tracking-[0.16em] text-mute uppercase">
+            Library
           </h2>
           <CatalogList
             selected={source.kind === "catalog" ? source.name : undefined}
@@ -159,10 +157,10 @@ export function GestoApp() {
           />
         </section>
 
-        <section className="order-1 bg-[#101010] p-6 lg:order-2">
+        <section className="order-1 flex flex-col px-6 pb-6 lg:order-2 lg:px-4">
           <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
-              Sketch
+            <h2 className="text-[12px] tracking-[0.16em] text-mute uppercase">
+              Canvas
             </h2>
             <div className="flex gap-2">
               <input
@@ -175,7 +173,7 @@ export function GestoApp() {
               <button
                 type="button"
                 onClick={() => imageInputRef.current?.click()}
-                className="h-9 border border-white/15 px-3 text-sm hover:border-white/40"
+                className="h-10 rounded-full px-4 text-sm ring-1 ring-ink/15 transition-transform duration-150 hover:bg-sheet active:scale-[0.96]"
               >
                 Use image
               </button>
@@ -183,7 +181,7 @@ export function GestoApp() {
                 <button
                   type="button"
                   onClick={stopSketch}
-                  className="h-9 border border-red-400 px-3 text-sm text-red-400"
+                  className="h-10 rounded-full bg-accent px-4 text-sm text-paper transition-transform duration-150 active:scale-[0.96]"
                 >
                   Stop
                 </button>
@@ -191,7 +189,7 @@ export function GestoApp() {
                 <button
                   type="button"
                   onClick={startSketch}
-                  className="h-9 border border-white/15 px-3 text-sm hover:border-white/40"
+                  className="h-10 rounded-full bg-ink px-4 text-sm text-paper transition-transform duration-150 hover:bg-accent active:scale-[0.96]"
                 >
                   Sketch
                 </button>
@@ -204,16 +202,16 @@ export function GestoApp() {
             onPointerMove={samplePointer}
             role="application"
             aria-label="Sketch stage"
-            className="relative aspect-square w-full max-w-[28rem] touch-none border border-white/10 bg-black"
+            className="relative aspect-square w-full max-w-[34rem] touch-none rounded-[28px] bg-sheet shadow-[0_1px_0_rgba(28,25,21,0.04),0_30px_60px_rgba(28,25,21,0.08)] ring-1 ring-ink/10"
           >
             {sketching ? (
               <>
-                <p className="absolute top-3 left-3 font-mono text-[11px] text-red-400">
-                  Sketching. Space stops.
+                <p className="absolute top-5 left-5 text-sm text-accent">
+                  Draw. Space stops.
                 </p>
                 {livePath.length > 1 ? (
                   <svg
-                    className="pointer-events-none absolute inset-0 text-lime-300/70"
+                    className="pointer-events-none absolute inset-0 text-ink/50"
                     width="100%"
                     height="100%"
                     aria-hidden="true"
@@ -236,7 +234,7 @@ export function GestoApp() {
                     <img
                       src={tokenSrc}
                       alt=""
-                      className="absolute size-8 rounded-sm object-cover"
+                      className="absolute size-8 rounded-sm object-cover outline outline-1 outline-black/10"
                       style={{
                         left: liveSample.x - 16,
                         top: liveSample.y - 16,
@@ -244,7 +242,7 @@ export function GestoApp() {
                     />
                   ) : (
                     <div
-                      className="absolute size-3 rounded-[3px] bg-lime-300"
+                      className="absolute size-3 rounded-sm bg-ink"
                       style={{
                         left: liveSample.x - 6,
                         top: liveSample.y - 6,
@@ -255,12 +253,12 @@ export function GestoApp() {
               </>
             ) : (
               <div className="flex h-full items-center justify-center">
-                <MotionPreview spec={spec} size={280} tokenSrc={tokenSrc} />
+                <MotionPreview spec={spec} size={320} tokenSrc={tokenSrc} />
               </div>
             )}
           </div>
           {sketchNotice ? (
-            <p className="mt-3 text-sm text-red-300">{sketchNotice}</p>
+            <p className="mt-3 text-sm text-accent">{sketchNotice}</p>
           ) : null}
         </section>
 
@@ -268,10 +266,10 @@ export function GestoApp() {
           {hydrated ? (
             <SpecPanel spec={spec} copied={copied} onCopy={copySpec} />
           ) : (
-            <section className="bg-[#0c0c0c] p-6">
-              <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
-                Spec
-              </h2>
+            <section className="p-6">
+              <p className="text-[12px] tracking-[0.16em] text-mute uppercase">
+                For your agent
+              </p>
             </section>
           )}
         </div>
