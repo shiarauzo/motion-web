@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { catalogItem, CATALOG_NAMES, type CatalogName } from "@/domain/catalog";
+import { catalogItem, type CatalogName } from "@/domain/catalog";
 import { serializeSpec } from "@/domain/serialize-spec";
 import type { SketchSample, Spec } from "@/domain/spec";
 import { specFromSketch } from "@/domain/spec-from-sketch";
+import { CatalogList } from "./catalog-list";
 import { MotionPreview } from "./motion-preview";
 
 type Source = { kind: "catalog"; name: CatalogName } | { kind: "sketch" };
@@ -123,31 +124,13 @@ export function GestoApp() {
           <h2 className="mb-4 font-mono text-[11px] tracking-[0.16em] text-white/40">
             Catalog
           </h2>
-          <ul className="grid gap-3">
-            {CATALOG_NAMES.map((name) => {
-              const item = catalogItem(name);
-              const selected =
-                source.kind === "catalog" && source.name === name;
-              return (
-                <li key={name}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSource({ kind: "catalog", name });
-                      setCopied(false);
-                    }}
-                    className={`flex w-full items-center justify-between border px-3 py-3 text-left text-sm capitalize ${
-                      selected
-                        ? "border-lime-300 text-lime-300"
-                        : "border-white/10 text-white/80 hover:border-white/30"
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+          <CatalogList
+            selected={source.kind === "catalog" ? source.name : undefined}
+            onSelect={(name) => {
+              setSource({ kind: "catalog", name });
+              setCopied(false);
+            }}
+          />
         </section>
 
         <section className="bg-[#101010] p-6">
