@@ -1,3 +1,9 @@
+# Gesto
+
+Read `CONTEXT.md` before changing domain language. Architectural decisions live in `docs/adr/`.
+
+Buttons use a single line of text. Do not use the centered dot as a separator.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
