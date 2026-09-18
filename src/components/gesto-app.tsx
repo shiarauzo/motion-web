@@ -17,6 +17,7 @@ export function GestoApp() {
   const [liveSample, setLiveSample] = useState<{ x: number; y: number } | null>(
     null,
   );
+  const [livePath, setLivePath] = useState<Array<{ x: number; y: number }>>([]);
   const [copied, setCopied] = useState(false);
   const samplesRef = useRef<SketchSample[]>([]);
   const startedAtRef = useRef(0);
@@ -42,6 +43,7 @@ export function GestoApp() {
         setSource({ kind: "sketch" });
       }
       setLiveSample(null);
+      setLivePath([]);
       return false;
     });
   }, []);
@@ -63,6 +65,7 @@ export function GestoApp() {
     samplesRef.current = [];
     startedAtRef.current = performance.now();
     setLiveSample(null);
+    setLivePath([]);
     setSketching(true);
     setCopied(false);
   };
@@ -79,6 +82,13 @@ export function GestoApp() {
       timeMs: performance.now() - startedAtRef.current,
     });
     setLiveSample({ x, y });
+    setLivePath((path) => [...path, { x, y }]);
+  };
+
+  const beginSketchStroke = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!sketching) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    samplePointer(event);
   };
 
   const copySpec = async () => {
@@ -158,17 +168,36 @@ export function GestoApp() {
           </div>
           <div
             ref={stageRef}
-            onPointerDown={samplePointer}
+            onPointerDown={beginSketchStroke}
             onPointerMove={samplePointer}
             role="application"
             aria-label="Sketch stage"
-            className="relative aspect-square w-full max-w-[28rem] border border-white/10 bg-black"
+            className="relative aspect-square w-full max-w-[28rem] touch-none border border-white/10 bg-black"
           >
             {sketching ? (
               <>
                 <p className="absolute top-3 left-3 font-mono text-[11px] text-red-400">
                   Sketching. Space stops.
                 </p>
+                {livePath.length > 1 ? (
+                  <svg
+                    className="pointer-events-none absolute inset-0 text-lime-300/70"
+                    width="100%"
+                    height="100%"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d={livePath
+                        .map((point, index) =>
+                          `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
+                        )
+                        .join(" ")}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                ) : null}
                 {liveSample ? (
                   <div
                     className="absolute size-3 rounded-[3px] bg-lime-300"
