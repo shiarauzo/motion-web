@@ -6,8 +6,8 @@
 
 **Status:** done
 
-- [x] Record starts from a single-line Record button
-- [x] While recording, the token follows the pointer
-- [x] Space stops recording and runs Cleanup
+- [x] Sketch starts from a single-line Sketch button
+- [x] While sketching, the token follows the pointer
+- [x] Space stops the Sketch and runs Cleanup
 - [x] The cleaned Motion loops on the stage
 - [x] Copy to agent serializes that Spec with no Target

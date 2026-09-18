@@ -12,7 +12,7 @@ type Source = { kind: "catalog"; name: CatalogName } | { kind: "sketch" };
 export function GestoApp() {
   const [source, setSource] = useState<Source>({ kind: "catalog", name: "bounce" });
   const [sketchSpec, setSketchSpec] = useState<Spec | null>(null);
-  const [recording, setRecording] = useState(false);
+  const [sketching, setSketching] = useState(false);
   const [liveSample, setLiveSample] = useState<{ x: number; y: number } | null>(
     null,
   );
@@ -32,8 +32,8 @@ export function GestoApp() {
     return sketchSpec ?? catalogItem("bounce");
   }, [source, sketchSpec]);
 
-  const stopRecording = useCallback(() => {
-    setRecording((active) => {
+  const stopSketch = useCallback(() => {
+    setSketching((active) => {
       if (!active) return active;
       const samples = samplesRef.current;
       if (samples.length >= 2) {
@@ -46,29 +46,28 @@ export function GestoApp() {
   }, []);
 
   useEffect(() => {
-    if (!recording) return;
+    if (!sketching) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.code !== "Space") return;
       event.preventDefault();
-      stopRecording();
+      stopSketch();
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [recording, stopRecording]);
+  }, [sketching, stopSketch]);
 
-  const startRecording = () => {
+  const startSketch = () => {
     samplesRef.current = [];
     startedAtRef.current = performance.now();
-    setSketchSpec(null);
     setLiveSample(null);
-    setRecording(true);
+    setSketching(true);
     setCopied(false);
   };
 
   const samplePointer = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!recording) return;
+    if (!sketching) return;
     const bounds = stageRef.current?.getBoundingClientRect();
     if (!bounds) return;
     const x = event.clientX - bounds.left;
@@ -156,10 +155,10 @@ export function GestoApp() {
             <h2 className="font-mono text-[11px] tracking-[0.16em] text-white/40">
               Sketch
             </h2>
-            {recording ? (
+            {sketching ? (
               <button
                 type="button"
-                onClick={stopRecording}
+                onClick={stopSketch}
                 className="h-9 border border-red-400 px-3 text-sm text-red-400"
               >
                 Stop
@@ -167,10 +166,10 @@ export function GestoApp() {
             ) : (
               <button
                 type="button"
-                onClick={startRecording}
+                onClick={startSketch}
                 className="h-9 border border-white/15 px-3 text-sm hover:border-white/40"
               >
-                Record
+                Sketch
               </button>
             )}
           </div>
@@ -182,10 +181,10 @@ export function GestoApp() {
             aria-label="Sketch stage"
             className="relative aspect-square w-full max-w-[28rem] border border-white/10 bg-black"
           >
-            {recording ? (
+            {sketching ? (
               <>
                 <p className="absolute top-3 left-3 font-mono text-[11px] text-red-400">
-                  Recording. Space stops.
+                  Sketching. Space stops.
                 </p>
                 {liveSample ? (
                   <div
