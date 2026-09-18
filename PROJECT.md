@@ -23,12 +23,12 @@ control.
 
 ## Current state
 
-Catalog cards play live motion. A sketch shows its trail. Authors can preview
-with their own image. The copied spec stays motion-only.
+The page is a paper studio: library cards, a canvas, and a caption that copies
+to an agent. Previews follow Spec time. Authors can ride the path with an image.
 
 ## Next action
 
-Make the preview follow Spec time, then apply a copied spec on a real page.
+Apply a copied spec on a real page, then tighten the narrow layout.
 
 ## Links
 

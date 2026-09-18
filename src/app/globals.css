@@ -1,40 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0c0c0c;
-  --foreground: #ededed;
+  --paper: #f3eee6;
+  --sheet: #faf6ef;
+  --ink: #1c1915;
+  --mute: #6f675c;
+  --rule: rgba(28, 25, 21, 0.1);
+  --accent: #c45c26;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-sans-loaded);
+  --font-serif: var(--font-serif-loaded);
 }
 
 html,
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  pointer-events: none;
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .gesto-token {
-  offset-distance: 0%;
-  animation-name: gesto-travel;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes gesto-travel {
-  to {
-    offset-distance: 100%;
-  }
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .gesto-token {
-    animation: none;
-    offset-distance: 0%;
+    transition: none;
   }
 }
